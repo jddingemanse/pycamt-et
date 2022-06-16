@@ -13,7 +13,7 @@ here = pathlib.Path(__file__).parent.resolve()
 long_description = (here / "README.md").read_text(encoding="utf-8")
 
 setup(
-    name="pycamt-et",  # Required
+    name="pycamtET",  # Required
     version="0.0.1",  # Required
     description="Meteorogly analysis for Ethiopia",  # Optional
     long_description=long_description,  # Optional
