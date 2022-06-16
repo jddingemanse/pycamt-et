@@ -1,2 +1,2 @@
-# pycamt-et
+# pycamtET
 Meteorology analysis for Ethiopia
