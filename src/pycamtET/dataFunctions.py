@@ -47,20 +47,22 @@ def dataLoad(filePath,dataChoice='values'):
     stationInfo(filePath)
     if dataChoice == 'values':
         df = df.drop(columns=df.columns[1:5])
-        df = df.melt(id_vars=df.columns[:5],var_name='day')
-        df.loc[:,'day'] = _pd.to_numeric(df.day)
-        df.loc[:,'YEAR'] = _pd.to_numeric(df.YEAR)
-        df.loc[:,'MONTH'] = _pd.to_numeric(df.MONTH)
-        df['date']=_pd.to_datetime(df.get(['YEAR','MONTH','day']),errors='coerce')
-        df.dropna(subset=['date'],inplace=True)
-        
         # repair some time values without ':'
         df.loc[~df.TIME.str.contains(':'),'TIME']=df[~df.TIME.str.contains(':')].TIME.str.slice_replace(-2,-2,':')
-        df['dateTime'] = _pd.to_datetime(df.date.astype('str')+' '+df.TIME,errors='coerce')
+        # turn all remaining na TIMES into 9:00
+        df.loc[:,'TIME'] = _pd.to_datetime(df.TIME,format='%H:%M',errors='coerce').fillna(_pd.to_datetime('9:00')).dt.time
+        df = df.melt(id_vars=df.columns[:5],var_name='day')
+        #df.loc[:,'day'] = _pd.to_numeric(df.day)
+        df.loc[:,'YEAR'] = _pd.to_numeric(df.YEAR)
+        df.loc[:,'MONTH'] = _pd.to_numeric(df.MONTH)
+        dftime = df.get(['YEAR','MONTH','day','TIME']).rename(columns={'TIME':'hour'})
+        df['dateTime']=_pd.to_datetime(dftime,errors='coerce')
         df.dropna(subset=['dateTime'],inplace=True)
+        df['date'] = df.dateTime.dt.date
+
         df['value'] = _pd.to_numeric(df.value,errors='coerce')
         df.sort_values(by=['STN_Name','EG_EL','dateTime'],inplace=True,ignore_index=True)
-        
+
         # Add season and Dk
         df['season']=_pd.cut(df.MONTH,[0,1,5,9,12],labels=['Bega','Belg','Kiremt','Bega1']).replace('Bega1','Bega')
         df['seasonyear'] = df.YEAR
