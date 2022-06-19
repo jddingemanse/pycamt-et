@@ -58,7 +58,7 @@ def dataLoad(filePath,dataChoice='values'):
         dftime = df.get(['YEAR','MONTH','day','TIME']).rename(columns={'TIME':'hour'})
         df['dateTime']=_pd.to_datetime(dftime,errors='coerce')
         df.dropna(subset=['dateTime'],inplace=True)
-        df['date'] = df.dateTime.dt.date
+        df['date'] = _pd.to_datetime(df.dateTime.dt.date)
 
         df['value'] = _pd.to_numeric(df.value,errors='coerce')
         df.sort_values(by=['STN_Name','EG_EL','dateTime'],inplace=True,ignore_index=True)
