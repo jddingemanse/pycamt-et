@@ -50,7 +50,7 @@ def dataLoad(filePath,dataChoice='values'):
         # repair some time values without ':'
         df.loc[~df.TIME.str.contains(':'),'TIME']=df[~df.TIME.str.contains(':')].TIME.str.slice_replace(-2,-2,':')
         # turn all remaining na TIMES into 9:00
-        df.loc[:,'TIME'] = _pd.to_datetime(df.TIME,format='%H:%M',errors='coerce').fillna(_pd.to_datetime('9:00')).dt.time
+        df.loc[:,'TIME'] = _pd.to_datetime(df.TIME,format='%H:%M',errors='coerce').fillna(_pd.to_datetime('9:00')).dt.hour
         df = df.melt(id_vars=df.columns[:5],var_name='day')
         #df.loc[:,'day'] = _pd.to_numeric(df.day)
         df.loc[:,'YEAR'] = _pd.to_numeric(df.YEAR)
