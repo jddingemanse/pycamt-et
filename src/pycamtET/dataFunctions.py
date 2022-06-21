@@ -52,7 +52,6 @@ def dataLoad(filePath,dataChoice='values'):
         # turn all remaining na TIMES into 9:00
         df.loc[:,'TIME'] = _pd.to_datetime(df.TIME,format='%H:%M',errors='coerce').fillna(_pd.to_datetime('9:00')).dt.hour
         df = df.melt(id_vars=df.columns[:5],var_name='day')
-        #df.loc[:,'day'] = _pd.to_numeric(df.day)
         df.loc[:,'YEAR'] = _pd.to_numeric(df.YEAR)
         df.loc[:,'MONTH'] = _pd.to_numeric(df.MONTH)
         dftime = df.get(['YEAR','MONTH','day','TIME']).rename(columns={'TIME':'hour'})
@@ -123,6 +122,7 @@ def locSelect(dataFrame,stationName='Assela'):
         dfDay['day'] = dfDay.index.day
         dfDay['season'] = dfSeasonDk['season']
         dfDay['dk'] = dfSeasonDk['dk']
+        dfDay = dfDay.drop(columns=['TIME'])
         
         #Reorganize order of columns
         timecols = ['YEAR','seasonyear','season','MONTH','dk','day']
@@ -406,7 +406,7 @@ def locData(dataFrame,element,year,season=None,month=None,dekadal=None):
     dfLoc[element+'std'] = dfLocAll.groupby(by=['STN_Name']).std()['value']
     dfLoc = dfLoc.rename(columns={'value':element})
 
-    dfLoc = dfLoc.drop(columns=['YEAR','MONTH','day','seasonyear'])
+    dfLoc = dfLoc.get([element,element+'avg',element+'std'])
     
     if month == None:
         if season == None:
