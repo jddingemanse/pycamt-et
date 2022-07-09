@@ -17,37 +17,42 @@ geodata=True
 
 try:
     import geopandas as gpd
+    test=gpd.read_file(setDict['adm3Path'])
 except:
-    print('Importing package geopandas not successful. Map abilities can not be used. To use these abilities, install the package geopandas')
+    print('Importing package geopandas or reading shapefile not successful. Map abilities can not be used.')
     geodata=False
+    _adm_d,_adm_m,_metercrs,_adm2_d,_adm1_d,_adm0_d=[None]*6
 if geodata:
     try:
         _adm_d = gpd.read_file(setDict['adm3Path'])
         _adm_m = _adm_d.to_crs(epsg=20137)
         _metercrs = _adm_m.crs
-        _adm_d = gpd.read_file(setDict['adm3Path'])
     except:
         print('File location of adm3 (ET districts) shape file not found at '+setDict['adm3Path']+'. Map abilities cannot be used.\n',
               'If you have the shape file, set the full path by using pckgSettings.setSettings(adm3Path="path/to/adm3shapefiles")')
-
+        _adm_d,_adm_m,_metercrs=[None]*3
+        geodata=False
     try:
         _adm2_d = gpd.read_file(setDict['adm2Path'])
     except:
         print('File location of adm2 (ET zones) shape file not found at '+setDict['adm2Path']+'. Map abilities cannot be used.\n',
               'If you have the shape file, set the full path by using pckgSettings.setSettings(adm2Path="path/to/adm2shapefiles")')
-
+        _adm2_d=None
+        geodata=False
     try:
         _adm1_d = gpd.read_file(setDict['adm1Path'])
     except:
         print('File location of adm1 (ET regions) shape file not found at '+setDict['adm1Path']+'. Map abilities cannot be used.\n',
               'If you have the shape file, set the full path by using pckgSettings.setSettings(adm1Path="path/to/adm1shapefiles")')
-
+        _adm1_d=None
+        geodata=False
     try:
         _adm0_d = gpd.read_file(setDict['adm0Path'])
     except:
         print('File location of adm0 (full ET) shape file not found at '+setDict['adm0Path']+'. Map abilities cannot be used.\n',
               'If you have the shape file, set the full path by using pckgSettings.setSettings(adm0Path="path/to/adm0shapefiles")')
-
+        _adm0_d = None
+        geodata=False
     from shapely.ops import unary_union
 
 def gridcalculate(gpdshape,areaname,gridsize=100):    
