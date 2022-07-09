@@ -14,7 +14,7 @@ long_description = (here / "README.md").read_text(encoding="utf-8")
 
 setup(
     name="pycamtET",  # Required
-    version="0.0.3",  # Required
+    version="0.0.4",  # Required
     description="Meteorogly analysis for Ethiopia",  # Optional
     long_description=long_description,  # Optional
     long_description_content_type="text/markdown",  # Optional (see note above)
