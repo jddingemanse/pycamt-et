@@ -14,11 +14,14 @@ pip install git+https://github.com/jddingemanse/pycamtET.git
 
 ## Package structure
 Functions for dataprocessing and plotting are stored in three different modules: .dataFunctions, .plotFunctions and .mapFunctions. Functions from .datafunctions can be used to process data. The processed data can be plotted as timeseries data with different functions under .plotFunctions, and on a map with different functions under .mapFunctions.
+
 Processing and plotting of data requires as input a datafile with meteorological station data from the Ethiopian Meteorology Institute. The package assumes this data is a .csv file with 40 columns: 9 columns with identifying data (location, element, year, month, etcetera) and 31 columns of 31 days per month.
 
 ## Dependencies
 In pycamtET, all .mapfunctions are depending on the package [Geopandas](https://anaconda.org/conda-forge/geopandas).
+
 One of the .mapFunctions is kriMap(); that function is depending on the package [pykrige](https://anaconda.org/conda-forge/pykrige).
+
 In the .plotFunctions, there is the function windRose(); that function is depending on the package [windrose](https://anaconda.org/conda-forge/windrose).
 
 ## Use examples
