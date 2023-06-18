@@ -108,10 +108,10 @@ def locSelect(dataFrame,stationName='Assela'):
     else:
         elements = df.EG_EL[df.STN_Name==stationName].unique()
         dfSeasonDk = df[df.STN_Name==stationName].get(['date','season','seasonyear','dk']).drop_duplicates(subset=['date']).set_index(['date'])
-        dfDay = df[(df.STN_Name==stationName)&(df.EG_EL==elements[0])].resample(rule='D',on='date').mean()
+        dfDay = df.loc[(df.STN_Name==stationName)&(df.EG_EL==elements[0]),['value','date']].resample(rule='D',on='date').mean()
         dfDay = dfDay.rename(columns={'value':elements[0]})
         for i in range(1,len(elements)):
-            dfAdd = df[(df.STN_Name==stationName)&(df.EG_EL==elements[i])].resample(rule='D',on='date').mean()
+            dfAdd = df.loc[(df.STN_Name==stationName)&(df.EG_EL==elements[i]),['value','date']].resample(rule='D',on='date').mean()
             dfDay[elements[i]] = dfAdd.value
         
         if 'PRECIP' in elements:
@@ -121,8 +121,8 @@ def locSelect(dataFrame,stationName='Assela'):
         dfDay['MONTH'] = dfDay.index.month
         dfDay['day'] = dfDay.index.day
         dfDay['season'] = dfSeasonDk['season']
+        dfDay['seasonyear'] = dfSeasonDk['seasonyear']
         dfDay['dk'] = dfSeasonDk['dk']
-        dfDay = dfDay.drop(columns=['TIME'])
         
         #Reorganize order of columns
         timecols = ['YEAR','seasonyear','season','MONTH','dk','day']
@@ -394,8 +394,8 @@ def locData(dataFrame,element,year,season=None,month=None,dekadal=None):
     subdf = df[(df.YEAR==year)&(df.season.isin(seasonList))&(df.MONTH.isin(monthList))&(df.dk.isin(dkList))&(df.EG_EL==element)]
     subdfAll = df[(df.season.isin(seasonList))&(df.MONTH.isin(monthList))&(df.dk.isin(dkList))&(df.EG_EL==element)]
         
-    grouper = subdf.groupby(by=['STN_Name'])
-    grouperAll = subdfAll.groupby(by=['STN_Name','YEAR'])
+    grouper = subdf.get(['STN_Name','value']).groupby(by=['STN_Name'])
+    grouperAll = subdfAll.get(['STN_Name','YEAR','value']).groupby(by=['STN_Name','YEAR'])
     if (element=='PRECIP') or (element=='RD'):
         dfLoc = grouper.sum()
         dfLocAll = grouperAll.sum()

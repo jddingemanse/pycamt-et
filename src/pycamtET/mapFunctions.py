@@ -293,7 +293,7 @@ def idwMap(dfLoc,region=None,adm2=None,adm3=None,savePath=None):
     ax1.contourf(x2d_d,y2d_d,estimate2d,cmap=cmap)
     clines = ax1.contour(x2d_d,y2d_d,estimate2d,cmap=cmap)
     ax1.clabel(clines)
-    cbar = fig1.colorbar(_cm.ScalarMappable(cmap=cmap),location='bottom')
+    cbar = fig1.colorbar(_cm.ScalarMappable(cmap=cmap),location='bottom',ax=ax1)
     cbar.set_ticks(_np.linspace(0,1,5))
     cbar.set_ticklabels(_np.round(_np.linspace(_np.nanmin(estimate2d),_np.nanmax(estimate2d),5),0))
     cbar.set_label(element+' '+unit)

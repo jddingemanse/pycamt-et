@@ -567,7 +567,7 @@ def cumulativeRF(dekadf,year,season=None,savePath=None):
     dfCumAll = df.get(['YEAR','MONTH','dk','PRECIP','PRECIPavg'])[df.MONTH.isin(seasonlist)]
     dfCumAll = dfCumAll.groupby(by=['YEAR','MONTH','dk']).mean().reset_index()
     dfCumAll.PRECIP.fillna(value=0,inplace=True) #fill missing values with 0 before taking cumulative, in order not to have missing cumulative values ###solution needed: make sure for every year there are all months
-    dfCumAll['cumulative'] = dfCumAll.groupby(by=['YEAR']).cumsum()['PRECIP'].values
+    dfCumAll['cumulative'] = dfCumAll.get(['YEAR','PRECIP']).groupby(by=['YEAR']).cumsum()['PRECIP'].values
     per5cum = dfCumAll.groupby(by=['MONTH','dk']).quantile(0.05)['cumulative']
     per95cum  = dfCumAll.groupby(by=['MONTH','dk']).quantile(0.95)['cumulative']
     avgcum  = dfCumAll.groupby(by=['MONTH','dk']).mean()['cumulative']
@@ -649,7 +649,7 @@ def cumulativeRFday(daydf,year,season=None,savePath=None):
     dfCumAll = df.get(['YEAR','MONTH','day','PRECIP'])[df.MONTH.isin(seasonlist)]
     dfCumAll = dfCumAll.groupby(by=['YEAR','MONTH','day']).mean().reset_index()
     dfCumAll.PRECIP.fillna(value=0,inplace=True) #fill missing values with 0 before taking cumulative, in order not to have missing cumulative values
-    dfCumAll['cumulative'] = dfCumAll.groupby(by=['YEAR']).cumsum()['PRECIP'].values
+    dfCumAll['cumulative'] = dfCumAll.get(['YEAR','PRECIP']).groupby(by=['YEAR']).cumsum()['PRECIP'].values
     per5cum = dfCumAll.groupby(by=['MONTH','day']).quantile(0.05)['cumulative']
     per95cum  = dfCumAll.groupby(by=['MONTH','day']).quantile(0.95)['cumulative']
     avgcum  = dfCumAll.groupby(by=['MONTH','day']).mean()['cumulative']
