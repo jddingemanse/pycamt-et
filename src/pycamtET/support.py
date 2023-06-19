@@ -123,7 +123,7 @@ def stationInfo(filePath,updateAll=False):
         return siNew
     
     siOld = siOld.set_index('STN_Name')
-    siAll = siNew.append(siOld)
+    siAll = pd.concat([siOld,siNew])
     siAll = siAll.sort_index()
     print('Data combined with previous stationinfo. All data saved.')
     siAll.to_csv(siPath)

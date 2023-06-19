@@ -581,8 +581,8 @@ def cumulativeRF(dekadf,year,season=None,savePath=None):
     dfCum = dfCum.dropna(how='all')
     
     if season == 'Bega':
-        dfCum = dfCum.iloc[-9:].append(dfCum.iloc[:3])
-        dkTicksSeason = dkTicksSeason.iloc[-9:].append(dkTicksSeason.iloc[:3])
+        dfCum = _pd.concat([dfCum.iloc[-9:],dfCum.iloc[:3]])
+        dkTicksSeason = _pd.concat([dkTicksSeason.iloc[-9:],dkTicksSeason.iloc[:3]])
     
     fig,ax=_plt.subplots(figsize=(18,12))
     
@@ -662,7 +662,7 @@ def cumulativeRFday(daydf,year,season=None,savePath=None):
     dfCum = dfCum.dropna(how='all')
     
     if season == 'Bega':
-        dfCum = dfCum.iloc[31:].append(dfCum.iloc[:31])
+        dfCum = _pd.concat([dfCum.iloc[31:],dfCum.iloc[:31]])
         #dkTicksSeason = dkTicksSeason.iloc[-9:].append(dkTicksSeason.iloc[:3])
     
     # Create ticks
