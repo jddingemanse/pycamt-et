@@ -4,3 +4,6 @@ Introduced geodata check in __init__.py. mapFunctions.py will only be imported i
 # 0.0.5
 - Updated use of Pandas DataFrame aggregation methods: only selecting numerical columns first.
 - Added in idwMap to draw colorbar on ax explicitly.
+
+# 0.0.6
+Removed use of df.append()
